@@ -1,0 +1,41 @@
+import { RouterContext,Status } from '../deps.ts'
+
+type ErrorArgs = Error | string;
+type ErrorType = {
+    error: {
+        message: string,
+        stack?: string,
+    }
+}
+
+export function createErrorBody(error: ErrorArgs):ErrorType {
+    const err = formatError(error);
+    return {
+        error: {
+            message: err.message,
+            stack: err.stack,
+        }
+    }
+}
+
+function formatError(error: ErrorArgs) : Error {
+    if(error instanceof Error) {
+        return error;
+    }
+    return new Error(error);
+}
+
+export function handleOk(ctx:RouterContext,data : any):void {
+    ctx.response.status = Status.OK; //status(200)
+    ctx.response.body = { data }
+}
+
+export async function getParams(ctx:RouterContext) {
+    const result = ctx.request.body();
+    const value = await result.value;
+
+    return {
+        ...ctx.params,
+        ...value,
+    };
+}
