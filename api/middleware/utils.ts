@@ -25,6 +25,13 @@ function formatError(error: ErrorArgs) : Error {
     return new Error(error);
 }
 
+//handle Error
+export function handleError(ctx : RouterContext,error : Error) {
+    ctx.response.status = Status.BadGateway;
+    ctx.response.body = createErrorBody(error);
+}
+
+//handle OK
 export function handleOk(ctx:RouterContext,data : any):void {
     ctx.response.status = Status.OK; //status(200)
     ctx.response.body = { data }
