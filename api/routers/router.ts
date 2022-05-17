@@ -1,10 +1,12 @@
 import {Router} from '../deps.ts'
 import {rootHandler,todosHandler} from '../controllers/index.ts'
 
-export const router = new Router();
-router.get("/",rootHandler.getHome);
-router.get('/todos',todosHandler.getTodos)
-router.get('/todos/:id',todosHandler.get)
-router.post('/todos',todosHandler.create)
-router.put('/todos/:id',todosHandler.update)
-router.delete('/todos:id',todosHandler.remove)
+const router = new Router();
+router.get("/api",rootHandler.getHome);
+router.get('/api/todos',todosHandler.getTodos)
+router.get('/api/todos/:id',todosHandler.get)
+router.post('/api/todos',todosHandler.create)
+router.put('/api/todos/:id',todosHandler.update)
+router.delete('/api/todos:id',todosHandler.remove)
+
+export default router;
