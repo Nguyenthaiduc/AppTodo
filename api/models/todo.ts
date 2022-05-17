@@ -73,7 +73,7 @@ export async function update(params : Partial<Todo> & Pick<Todo,"id"> ) : Promis
             updatedAt: new Date().toISOString(), //sẽ chuyển đổi một đối tượng thời gian thành một chuỗi theo tiêu chuẩn ISO.
         }
     );
-    await updateAll(fromMap(todoMap));
+    updateAll(fromMap(todoMap));
     return [true,undefined]
 }
 
@@ -85,6 +85,6 @@ export async function remove ({id} : Pick<Todo,"id">) : Promise<Result<true>> {
         return [undefined,new Error("Cannot find Iteam")]
     }
     todoMap.delete(id);
-    await updateAll(fromMap(todoMap));
+     updateAll(fromMap(todoMap));
     return [true,undefined]
 }
