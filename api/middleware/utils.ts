@@ -27,7 +27,7 @@ function formatError(error: ErrorArgs) : Error {
 
 //handle Error
 export function handleError(ctx : RouterContext,error : Error) {
-    ctx.response.status = Status.BadGateway;
+    ctx.response.status = Status.BadGateway; //status(403)
     ctx.response.body = createErrorBody(error);
 }
 
