@@ -52,7 +52,7 @@ export async function getParams(ctx:RouterContext) {
 
 export function toMap<T extends Id>(data : T[]) : Map<string,T> {
     
-    return data.reduce((p,d) => p.set(d.id,d),new Map())
+    return data.reduce((p,d) => p.set(d.id,d),new Map());
 
 }
 
