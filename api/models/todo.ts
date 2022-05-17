@@ -70,7 +70,7 @@ export async function update(params : Partial<Todo> & Pick<Todo,"id"> ) : Promis
         {
             ...current,
             ...params,
-            updatedAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(), //sẽ chuyển đổi một đối tượng thời gian thành một chuỗi theo tiêu chuẩn ISO.
         }
     );
     await updateAll(fromMap(todoMap));
