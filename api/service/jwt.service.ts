@@ -1,4 +1,4 @@
-import { create,getNumericDate} from '../deps.ts'
+import { create,getNumericDate,verify,Payload} from '../deps.ts'
 
 export class JwtService {
     async create (id : string) {
@@ -12,5 +12,17 @@ export class JwtService {
         const jwt = await create({alg :"HS512",typ : "JWT"},payload,key);
 
         return jwt;
+    }
+
+    async verify (jwt : string) {
+        const key = Deno.env.get('SECRET_KEY') || '';
+
+        try {
+            const payload = await verify(jwt,key,"HS512");
+            return [payload,undefined]
+        
+        }catch (err) {
+            return [undefined,err]
+        }
     }
 }
