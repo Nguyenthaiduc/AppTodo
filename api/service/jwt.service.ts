@@ -14,7 +14,7 @@ export class JwtService {
         return jwt;
     }
 
-    async verify (jwt : string) {
+    async verify (jwt : string) : Promise<[Payload | undefined,Error | undefined]> {
         const key = Deno.env.get('SECRET_KEY') || '';
 
         try {

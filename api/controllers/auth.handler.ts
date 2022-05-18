@@ -11,7 +11,7 @@ export const Register = async ({request,response} : RouterContext) => {
     user.first_name = body.first_name;
     user.last_name = body.last_name;
     user.email = body.email;
-    user.password = body.password
+    user.password = body.password;
 
     const userRepository = new UserRepository();
     await userRepository.create(user);
@@ -48,7 +48,7 @@ export const Login = async ({request,response,cookies} : RouterContext) => {
 
     const jwtService = new JwtService()
     const jwt = await jwtService.create(user.id);
-
+    //check jwt
     cookies.set('jwt', jwt, {httpOnly: true});
 
     response.status = Status.OK;

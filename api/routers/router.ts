@@ -1,6 +1,6 @@
 import {Router} from '../deps.ts'
 import {authHandler, rootHandler,todosHandler} from '../controllers/index.ts'
-import {Register} from '../controllers/auth.controller.ts'
+import {Register} from '../controllers/auth.handler.ts'
 import { authMiddleware } from '../middleware/auth.middleware.ts'
 import { loginValidation, registerValidation } from "../validations/index.ts";
 
