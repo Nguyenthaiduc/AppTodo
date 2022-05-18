@@ -56,6 +56,12 @@ export function toMap<T extends Id>(data : T[]) : Map<string,T> {
 
 }
 
+export function toMapEmail<T extends {email : string}> (data : T[]) : Map<string,T> {
+    
+    return data.reduce((p,d) => p.set(d.email,d),new Map())
+}
+
+
 export function fromMap<T extends Id>(data: Map<string,T>) : T[] {
     const arr = [];
     for (let v of data.values()) {

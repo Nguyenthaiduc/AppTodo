@@ -1,5 +1,5 @@
 import {Router} from '../deps.ts'
-import {rootHandler,todosHandler} from '../controllers/index.ts'
+import {authHandler, rootHandler,todosHandler} from '../controllers/index.ts'
 import {Register} from '../controllers/auth.controller.ts'
 
 const router = new Router();
@@ -11,5 +11,7 @@ router.post('/api/todos',todosHandler.create)
 router.post('/api/register',Register)
 router.put('/api/todos/:id',todosHandler.update)
 router.delete('/api/todos:id',todosHandler.remove)
+
+router.post('/api/register',  registerValidation.RegisterValidation, authHandler.Register);
 
 export default router;
