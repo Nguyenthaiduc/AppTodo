@@ -1,10 +1,13 @@
 import {Status, RouterContext} from '../deps.ts'
 import { todoModel } from '../models/index.ts'
 import { getParams,handleError,handleOk} from '../middleware/utils.ts'
+import { TodoRepository } from '../repositories/todo.repository.ts'
 
 //trả về tất cả khi dùng METHOD 'GET'
-export const getTodos = async (ctx : RouterContext) => {
-    const todos = todoModel.getAll();
+export const getAll = async (ctx : RouterContext) => {
+    const todoRepository = new TodoRepository();
+    const todos = await todoRepository.getAll();
+
 
     ctx.response.status = Status.OK;
     ctx.response.body = {
@@ -15,7 +18,8 @@ export const getTodos = async (ctx : RouterContext) => {
 //Get Method
 export const get = async (ctx : RouterContext) => {
     const params = await getParams(ctx);
-    const [todos,error] = await todoModel.get(params)
+    const todoRepository = new TodoRepository();
+    const [todos,error] = await todoRepository.get(params)
     if(error) {
         return handleError(ctx,error);
     }
@@ -26,7 +30,8 @@ export const get = async (ctx : RouterContext) => {
 //Post Method
 export const create = async (ctx : RouterContext) => {
     const params = await getParams(ctx);
-    await todoModel.create(params);
+    const todoRepository = new TodoRepository();
+    await todoRepository.create(params);
 
     ctx.response.status = Status.OK;
     handleOk(ctx, "Post successfully !")
@@ -35,7 +40,8 @@ export const create = async (ctx : RouterContext) => {
 //Update Method
 export const update = async (ctx : RouterContext) => {
     const params = await getParams(ctx);
-    const [_,error] =  await todoModel.update(params)
+    const todoRepository = new TodoRepository();
+    const [_,error] =  await todoRepository.update(params)
 
     if(error) {
         return handleError(ctx,error);
@@ -47,7 +53,8 @@ export const update = async (ctx : RouterContext) => {
 //Delete Method
 export const remove = async (ctx : RouterContext) => {
     const params = await getParams(ctx);
-    const [_,error] = await todoModel.remove(params);
+    const todoRepository = new TodoRepository();
+    const [_,error] = await todoRepository.remove(params);
 
     if(error) {
         return handleError(ctx,error);
