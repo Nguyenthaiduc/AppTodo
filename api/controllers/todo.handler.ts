@@ -1,7 +1,8 @@
 import {Status, RouterContext} from '../deps.ts'
-import { todoModel } from '../models/index.ts'
+
 import { getParams,handleError,handleOk} from '../middleware/utils.ts'
 import { TodoRepository } from '../repositories/todo.repository.ts'
+import { JwtService } from '../service/jwt.service.ts'
 
 //trả về tất cả khi dùng METHOD 'GET'
 export const getAll = async (ctx : RouterContext) => {
