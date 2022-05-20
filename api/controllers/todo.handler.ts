@@ -1,63 +1,56 @@
-import {Status, RouterContext} from '../deps.ts'
-import { todoModel } from '../models/index.ts'
+import { RouterContext} from '../deps.ts'
+
 import { getParams,handleError,handleOk} from '../middleware/utils.ts'
 import { TodoRepository } from '../repositories/todo.repository.ts'
+import {JwtService} from '../service/jwt.service.ts'
 
 //trả về tất cả khi dùng METHOD 'GET'
-export const getAll = async (ctx : RouterContext) => {
-    const todoRepository = new TodoRepository();
-    const todos = await todoRepository.getAll();
 
+export class TodoHandler {
+    constructor(private todoRepository : TodoRepository,
+                private jwtService : JwtService){}
 
-    ctx.response.status = Status.OK;
-    ctx.response.body = {
-        data : todos,
+    async getAll (ctx : RouterContext): Promise<void> {
+        const userId = await this.jwtService.userId(ctx.cookies.get('jwt') || '');
+        const todos = await this.todoRepository.findByUserId(userId);
+
+       handleOk(ctx,todos)
     }
 
-}
-//Get Method
-export const get = async (ctx : RouterContext) => {
-    const params = await getParams(ctx);
-    const todoRepository = new TodoRepository();
-    const [todos,error] = await todoRepository.get(params)
-    if(error) {
-        return handleError(ctx,error);
+    async get(ctx : RouterContext) : Promise<void> {
+        const { id } = await getParams(ctx)
+        const [todo,error] = await this.todoRepository.find(id)
+        if(error) {
+            return handleError(ctx,error)
+        }
+        handleOk(ctx,todo)
     }
 
-    handleOk(ctx,todos);
-}
+    async create(ctx : RouterContext) : Promise<void> {
+        const params = await getParams(ctx)
+        const userId = await this.JwtService.userId(ctx.cookies.get('jwt') || '')
+        await this.todoRepository.create(params.title,userId)
 
-//Post Method
-export const create = async (ctx : RouterContext) => {
-    const params = await getParams(ctx);
-    const todoRepository = new TodoRepository();
-    await todoRepository.create(params);
-
-    ctx.response.status = Status.OK;
-    handleOk(ctx, "Post successfully !")
-    
-}
-//Update Method
-export const update = async (ctx : RouterContext) => {
-    const params = await getParams(ctx);
-    const todoRepository = new TodoRepository();
-    const [_,error] =  await todoRepository.update(params)
-
-    if(error) {
-        return handleError(ctx,error);
+        handleOk(ctx,"successfully")
     }
-    handleOk(ctx," Update successfully !")
-   
-}
 
-//Delete Method
-export const remove = async (ctx : RouterContext) => {
-    const params = await getParams(ctx);
-    const todoRepository = new TodoRepository();
-    const [_,error] = await todoRepository.remove(params);
-
-    if(error) {
-        return handleError(ctx,error);
+    async update(ctx : RouterContext) : Promise<void> {
+        const params = await getParams(ctx);
+        const [_, error] = await this.todoRepository.update(params);
+         if(error) {
+            return handleError(ctx,error)
+         }
+         handleOk(ctx,"successfully")
+       
     }
-    handleOk(ctx," Remove successfully !")
+
+    async remove(ctx : RouterContext) : Promise<void> {
+        const params = await getParams(ctx);
+        const [_, error] = await this.todoRepository.remove(params)
+        if(error) {
+            return handleError(ctx,error)
+        }
+        handleOk(ctx,"successfully")
+    }
+                
 }

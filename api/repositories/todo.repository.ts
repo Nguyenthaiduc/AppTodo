@@ -7,74 +7,86 @@ type Result<T> = [T,undefined] | [undefined, Error]
 export class TodoRepository {
 
 
-
-async getAll(): Promise<Todo[]> {
+async findByUserId(userId : string): Promise<Todo[]> {
     const data = await Deno.readFile(FILE_PATH);
     const decoder = new TextDecoder(); //Giải mã.
     
-    return JSON.parse(decoder.decode(data)); //Convert JSON to Object
+    const todos = JSON.parse(decoder.decode(data)); //Convert JSON to Object
+    return todos.filter((todo : Todo) => todo.userId == userId)
 }
 
-async get(id: string): Promise<[Todo | undefined, Error | undefined]> {
-    const todos = await this.getAll();
+
+async find(id: string): Promise<[Todo | undefined, Error | undefined]> {
+    const todos = await this.findAll();
     const todo = toMap(todos).get(id);
 
     if(!todo) {
-        return [undefined,new Error("Can Find Item")];
+        return [undefined,new Error("Can Find Todo")];
     }
     return [todo,undefined];
 }
 
-    updateAll(todos: Todo[]): boolean {
+   private updateAll(todos: Todo[]): boolean {
     const encoder = new TextEncoder();
     Deno.writeFile(
         FILE_PATH,
-        encoder.encode(JSON.stringify(todos)),
+        encoder.encode(JSON.stringify(todos, null, "\t")),
     )
     return true;
 }
 
-  async create(title : string):Promise<true> {
-    const todos = await this.getAll();
+  async create(title : string,userId : string):Promise<[boolean | undefined, Error | undefined]> {
+    const todos = await this.findAll();
     const id = uuid.generate(); // tạo id ngẫu nhiên từ uuid
 
     const now = new Date().toISOString();
-    this.updateAll([
-        ...todos,
-        {
-            id,
-            done: false,
-            title,
-            createdAt: now,
-            updatedAt: now,
-        },
-    ]);
-    return true;
+    try {
+        this.updateAll([
+            ...todos,
+            {
+                id,
+                userId,
+                done: false,
+                title,
+                createdAt: now,
+                updatedAt: now,
+            },
+        ]);
+        return [true,undefined]
+        
+    }catch (err) {
+        return [false, new Error(err)]
+    }
 }
 
- async update(params : Partial<Todo> & Pick<Todo,"id"> ) : Promise<Result<true>> {
-    const todos = await this.getAll();
+ async update(params : Partial<Todo> & Pick<Todo,"id"> ) :Promise<[boolean | undefined, Error | undefined]> {
+    const todos = await this.findAll();
     const todoMap = toMap(todos);
-    const current = todoMap.get(params.id);
+    const todo = todoMap.get(params.id);
 
-    if(!current) {
-        return [undefined,new Error("Cannot Find Item")]
+    if(!todo) {
+        return [undefined,new Error("Cannot Find Todo")]
     }
+    try {
+        todoMap.set(
+            params.id,
+            {
+                ...todo,
+                ...params,
+                updatedAt: new Date().toISOString(), //sẽ chuyển đổi một đối tượng thời gian thành một chuỗi theo tiêu chuẩn ISO.
+            }
+        );
+        this.updateAll(fromMap(todoMap));
+        return [true, undefined];
 
-    todoMap.set(
-        params.id,
-        {
-            ...current,
-            ...params,
-            updatedAt: new Date().toISOString(), //sẽ chuyển đổi một đối tượng thời gian thành một chuỗi theo tiêu chuẩn ISO.
-        }
-    );
-    this.updateAll(fromMap(todoMap));
-    return [true,undefined]
+    }catch(err){
+        return [false, new Error(err)];
+    }
+   
 }
 
     async remove(id : string) : Promise<Result<true>> {
-    const todos = await this.getAll();
+    const todos = await this.findAll();
     const todoMap = toMap(todos);
 
     if(!todoMap.has(id)) {
@@ -84,4 +96,10 @@ async get(id: string): Promise<[Todo | undefined, Error | undefined]> {
      this.updateAll(fromMap(todoMap));
     return [true,undefined]
 }
+
+private async findAll(): Promise<Todo[]> {
+    const data = await Deno.readFile(FILE_PATH);
+    const decoder = new TextDecoder();
+    return JSON.parse(decoder.decode(data));
+  }
 }
