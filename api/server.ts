@@ -1,14 +1,14 @@
 import {Application,bold,yellow} from './deps.ts'
 import router from './routers/router.ts'
-import {logger,errorHandler,notFoundHandler} from './middleware/index.ts'
+import {logger,internalServerErrorHandler,notFoundErrorHandler} from './middleware/index.ts'
 
 const app = new Application();
 
 app.use(logger);
-app.use(errorHandler);
+app.use(internalServerErrorHandler);
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.use(notFoundHandler)
+app.use(notFoundErrorHandler)
 
 
 
