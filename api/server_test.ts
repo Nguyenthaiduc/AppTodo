@@ -1,5 +1,5 @@
 import { testing, assertEquals} from './test_deps.ts';
-import { router } from './routers/router.ts';
+import  router  from './routers/router.ts';
 
 const mw = router.routes();
 
