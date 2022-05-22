@@ -1,8 +1,8 @@
 import {Status, RouterContext} from '../deps.ts'
 
-export const getHome = (ctx : RouterContext) => {
-    ctx.response.status = Status.OK; //similar res.status(200)
-    ctx.response.body = "Todo List API with NodeJS"
-    console.log(ctx.response.body)
-    
-};
+export class RootHandler {
+    getHome(ctx : RouterContext) : void {
+        ctx.response.status = Status.OK;
+        ctx.response.body = "TodoList API with Deno"
+    }
+}

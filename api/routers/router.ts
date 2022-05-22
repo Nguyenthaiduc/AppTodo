@@ -1,5 +1,5 @@
 import {Router} from '../deps.ts'
-import {AuthHandler , rootHandler,TodoHandler} from '../controllers/index.ts'
+import {AuthHandler , RootHandler,TodoHandler,UserHandler   } from '../controllers/index.ts'
 import { authMiddleware } from '../middleware/auth.middleware.ts'
 import { loginValidation, registerValidation } from "../validations/index.ts";
 import { TodoRepository, UserRepository } from '../repositories/index.ts';
@@ -9,7 +9,10 @@ const router = new Router();
 const todoHandler = new TodoHandler(new TodoRepository(), new JwtService());
 
 //Todo
-router.get("/api",rootHandler.getHome);
+const rootHandler = new RootHandler();
+router.get("/api",(ctx) => rootHandler.getHome(ctx))
+    
+
 router.get('/api/todos',authMiddleware,(ctx)=> todoHandler.getAll(ctx))
 router.get('/api/todos/:id',todoHandler,(ctx)=> todoHandler.get(ctx))
 
@@ -25,7 +28,7 @@ router.post('/api/login',  loginValidation.LoginValidation, (ctx) => authHandler
 router.post('/api/logout', (ctx) => authHandler.logout(ctx));
 
 // User
-router.get('/api/user', authMiddleware, (ctx) => authHandler.getUser(ctx));
-
+const userHandler = new UserHandler(new UserRepository(),new JwtService());
+router.get('/api/user',authMiddleware,(ctx) => userHandler.getUser(ctx));
 
 export default router;
