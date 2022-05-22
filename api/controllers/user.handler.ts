@@ -2,7 +2,7 @@ import { RouterContext, bcrypt, Status } from "../deps.ts";
 import { UserRepository } from '../repositories/user.repository.ts';
 import {JwtService } from '../service/index.ts'
 
-class UserHandler {
+export class UserHandler {
     constructor(private userRepository: UserRepository,
                 private jwtService : JwtService){}
 

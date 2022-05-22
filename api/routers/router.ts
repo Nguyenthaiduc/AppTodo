@@ -14,7 +14,7 @@ router.get("/api",(ctx) => rootHandler.getHome(ctx))
     
 
 router.get('/api/todos',authMiddleware,(ctx)=> todoHandler.getAll(ctx))
-router.get('/api/todos/:id',todoHandler,(ctx)=> todoHandler.get(ctx))
+router.get('/api/todos/:id',authMiddleware,(ctx)=> todoHandler.get(ctx))
 
 router.post('/api/todos',authMiddleware,(ctx)=> todoHandler.create(ctx))
 router.put('/api/todos/:id',authMiddleware,(ctx)=> todoHandler.update(ctx))
