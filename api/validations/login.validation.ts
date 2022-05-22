@@ -1,4 +1,4 @@
-import {RouterContext,Status,validate,required,isEmail} from '../deps.ts'
+import { isEmail, required, RouterContext, Status, validate } from "../deps.ts";
 
 export const LoginValidation = async ({request,response} : RouterContext,next: ()=> Promise<unknown>) => {
     const body = await request.body().value;

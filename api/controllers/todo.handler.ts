@@ -11,7 +11,7 @@ export class TodoHandler {
                 private jwtService : JwtService){}
 
     async getAll (ctx : RouterContext): Promise<void> {
-        const userId = await this.jwtService.userId(ctx.cookies.get('jwt') || '');
+        const userId = await this.jwtService.userId(ctx.cookies.get("jwt") || "");
         const todos = await this.todoRepository.findByUserId(userId);
 
        handleOk(ctx,todos)
@@ -28,7 +28,7 @@ export class TodoHandler {
 
     async create(ctx : RouterContext) : Promise<void> {
         const params = await getParams(ctx)
-        const userId = await this.jwtService.userId(ctx.cookies.get('jwt') || '')
+        const userId = await this.jwtService.userId(ctx.cookies.get("jwt") || "")
         await this.todoRepository.create(params.title,userId)
 
         handleOk(ctx,"successfully")

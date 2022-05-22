@@ -1,4 +1,4 @@
-import { RouterContext,bcrypt,Status} from '../deps.ts'
+import { bcrypt, RouterContext, Status } from "../deps.ts";
 import { User } from '../models/user.ts'
 import { UserRepository} from '../repositories/user.repository.ts'
 import { JwtService } from '../service/jwt.service.ts'
@@ -6,7 +6,7 @@ import { JwtService } from '../service/jwt.service.ts'
 
 export class AuthHandler {
     constructor(private userRepository: UserRepository,
-                private jwtService: JwtService ){}
+                private jwtService: JwtService, ){}
 
     
         async signup({request,response} : RouterContext) : Promise<void> {
@@ -30,21 +30,21 @@ export class AuthHandler {
             if(error) {
                 response.status = Status.BadRequest;
                 response.body = {
-                    message: error
+                    message: error,
                 }
                 return
             }
             if(!user) {
                 response.status = Status.BadRequest;
                 response.body = {
-                    message: "User not found"
+                    message: "User not found",
                 }
                 return
             }
             if(!bcrypt.compareSync(password, user.password)) {
                 response.status = Status.Unauthorized;
                 response.body = {
-                    message: "Unauthorized"
+                    message: "Unauthorized",
                 }
                 return
             }
@@ -52,11 +52,11 @@ export class AuthHandler {
             
             const jwt = await this.jwtService.create(user.id);
 
-            cookies.set('jwt',jwt,{httpOnly: true})
+            cookies.set("jwt", jwt,{httpOnly: true})
 
             response.status = Status.OK;
             response.body = {
-                jwt
+                jwt,
             }
            
         }
@@ -65,7 +65,7 @@ export class AuthHandler {
             cookies.delete('jwt');
             response.status = Status.OK;
             response.body = {
-                message: "Log out successfully"
+                message: "Log out successfully",
             }
 
         }
