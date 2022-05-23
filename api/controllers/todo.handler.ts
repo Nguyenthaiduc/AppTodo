@@ -1,6 +1,6 @@
-import { RouterContext} from '../deps.ts'
+import { RouterContext,Status} from '../deps.ts'
 
-import { getParams,handleError,handleOk} from '../middleware/utils.ts'
+import { getParams} from '../middleware/utils.ts'
 import { TodoRepository } from '../repositories/todo.repository.ts'
 import {JwtService} from '../service/jwt.service.ts'
 
@@ -14,16 +14,27 @@ export class TodoHandler {
         const userId = await this.jwtService.userId(ctx.cookies.get("jwt") || "");
         const todos = await this.todoRepository.findByUserId(userId);
 
-       handleOk(ctx,todos)
+       ctx.response.status = Status.OK;
+       ctx.response.body = {
+           todos,
+       };
+
     }
 
     async get(ctx : RouterContext) : Promise<void> {
         const { id } = await getParams(ctx)
         const [todo,error] = await this.todoRepository.find(id)
         if(error) {
-            return handleError(ctx,error)
+            ctx.response.status = Status.BadRequest;
+            ctx.response.body = {
+                error,
+            }
+            return;
         }
-        handleOk(ctx,todo)
+        ctx.response.status = Status.OK;
+        ctx.response.body = {
+            todo,
+        }
     }
 
     async create(ctx : RouterContext) : Promise<void> {
@@ -31,16 +42,26 @@ export class TodoHandler {
         const userId = await this.jwtService.userId(ctx.cookies.get("jwt") || "")
         await this.todoRepository.create(params.title,userId)
 
-        handleOk(ctx,"successfully")
+        ctx.response.status = Status.OK;
+        ctx.response.body = {
+            message : 'successfully !'
+        }
     }
 
     async update(ctx : RouterContext) : Promise<void> {
         const params = await getParams(ctx);
         const [_, error] = await this.todoRepository.update(params);
          if(error) {
-            return handleError(ctx,error)
+            ctx.response.status = Status.BadRequest;
+            ctx.response.body = {
+                error,
+            }
+            return
          }
-         handleOk(ctx,"successfully")
+         ctx.response.status = Status.OK;
+         ctx.response.body = {
+             message: 'successfully !'
+         }
        
     }
 
@@ -48,9 +69,16 @@ export class TodoHandler {
         const params = await getParams(ctx);
         const [_, error] = await this.todoRepository.remove(params)
         if(error) {
-            return handleError(ctx,error)
+            ctx.response.status = Status.BadRequest;
+            ctx.response.body = {
+                error,
+            }
+            return
         }
-        handleOk(ctx,"successfully")
+        ctx.response.status = Status.OK;
+        ctx.response.body = {
+            message: 'successfully !',
+        }
     }
                 
 }

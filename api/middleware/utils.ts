@@ -1,4 +1,4 @@
-import { RouterContext,Status } from '../deps.ts'
+import { RouterContext } from '../deps.ts'
 
 type Id = {
     id : string
@@ -28,17 +28,7 @@ function formatError(error: ErrorArgs) : Error {
     return new Error(error);
 }
 
-//handle Error
-export function handleError(ctx : RouterContext,error : Error) {
-    ctx.response.status = Status.BadGateway; //status(403)
-    ctx.response.body = createErrorBody(error);
-}
 
-//handle OK
-export function handleOk(ctx:RouterContext,data : any):void {
-    ctx.response.status = Status.OK; //status(200)
-    ctx.response.body = { data }
-}
 
 export async function getParams(ctx:RouterContext) {
     const result = ctx.request.body();
