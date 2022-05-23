@@ -27,7 +27,7 @@ export class UserRepository {
       return [user, undefined];
     }
   
-    async create({first_name, last_name, email, password}: User): Promise<boolean>{
+    async create({firstName, lastName, email, password}: User): Promise<boolean>{
       const users: User[] = await this.getAll();
   
       const id = uuid.generate();
@@ -35,8 +35,8 @@ export class UserRepository {
         ...users,
         {
           id,
-          first_name,
-          last_name,
+          firstName,
+          lastName,
           email,
           password,
         },
