@@ -1,4 +1,4 @@
-import { create,getNumericDate,verify,Payload} from '../deps.ts'
+import {RouterContext, create,getNumericDate,verify,Payload} from '../deps.ts'
 
 export class JwtService {
     async create (id : string): Promise<string> {
@@ -26,10 +26,11 @@ export class JwtService {
         }
     }
 
-    async userId(jwt: string): Promise<string> {
+    async userId(ctx: RouterContext): Promise<string> {
         const key = Deno.env.get('SECRET_KEY') || '';
     
         try {
+          const jwt = ctx.cookies.get("jwt") || "";
           const { id } = await verify(jwt, key, "HS512");
           return id as string;
         } catch {

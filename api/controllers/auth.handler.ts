@@ -64,7 +64,7 @@ export class AuthHandler {
             response.status = Status.OK;
             response.body = {
                 // jwt,
-                message: "login successful"
+                message: "login successful",
             }
            
         }
