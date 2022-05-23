@@ -1,6 +1,6 @@
 import { RouterContext, Status } from "../deps.ts";
 import { UserRepository } from '../repositories/user.repository.ts';
-import {JwtService } from '../service/index.ts'
+import {JwtService } from '../service/index.ts';
 
 export class UserHandler {
     constructor(private userRepository: UserRepository,
