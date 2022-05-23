@@ -13,4 +13,4 @@ jobs:
      
       - name: Run tests
         run: |
-          deno test -A --unstable
+          DENO_ENV=test deno test -A --unstable
