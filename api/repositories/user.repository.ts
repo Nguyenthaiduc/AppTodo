@@ -32,7 +32,7 @@ export class UserRepository implements IUserRepository {
       const users: User[] = await this.getAll();
   
       const id = uuid.generate();
-      const result = this.updateAll([
+      const result = await this.updateAll([
         ...users,
         {
           id,
@@ -56,9 +56,9 @@ export class UserRepository implements IUserRepository {
       return JSON.parse(decoder.decode(data));
     }
   
-     updateAll(users: User[]): boolean {
+    async updateAll(users: User[]):Promise<boolean>  {
       const encoder = new TextEncoder();
-      Deno.writeFile(
+      await Deno.writeFile(
         FILE_PATH,
         encoder.encode(JSON.stringify(users, null, "\t")),
       );

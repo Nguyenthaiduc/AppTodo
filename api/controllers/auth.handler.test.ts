@@ -17,68 +17,89 @@ const setup = async () => {
     firstName: "testuser1",
     lastName: "testuser1",
     email: "example@example.com",
-    password: "$2a$10$LoKWLBBZ2s4ulydYSPAU2OCuKRe98pZle6PxgH5qzdVOSduBl6fcW"
+    password: "$2a$10$LoKWLBBZ2s4ulydYSPAU2OCuKRe98pZle6PxgH5qzdVOSduBl6fcW",
   } as User
   await userRepository.create(user);
 }
 
 const tearDown = async () => {
   const encoder = new TextEncoder();
-  Deno.remove("./db/users_test.json");
+
   await Deno.writeFile(
     "./db/users_test.json",
     encoder.encode(JSON.stringify([]))
   );
 
-  const wrapFn = async (fn: () => void | Promise<void>): Promise<void> => {
-    await setup();
-    await fn();
-    await tearDown();
-  }
 
 
 
 Deno.test({
   name: "POST /v1/signup",
-  fn: async () => await wrapFn(async () => {
+  async fn() {
     const ctx = testing.createMockContext({ path: "/v1/signup" });
     const serverRequest = createMockServerRequest(
       {
         method: "POST",
         headerValues: { "content-type": "application/json" },
-        body: JSON.stringify({ firstName: "signuptest", lastName: "signuptest", email: "signup@example.com", password: "password" }),
-      }
+        body: JSON.stringify({
+          firstName: "signuptest",
+          lastName: "signuptest",
+          email: "signup@example.com",
+          password: "password",
+        }),
+      },
     );
     ctx.request = new Request(serverRequest);
     ctx.cookies = new Cookies(ctx.request, ctx.response);
     const mw = (ctx: RouterContext) => handler.signup(ctx);
     await mw(ctx);
     assertEquals(ctx.response.status, Status.OK);
-    assertEquals(ctx.response.body, {message: "signup successful"});
-  })
-})
+    assertEquals(ctx.response.body, { message: "signup successful" });
+    await tearDown();
+  },
+});
 
 Deno.test({
   name: "POST /v1/login",
-  fn: async () => await wrapFn(async () => {
+  async fn() {
+    await setup()
     const ctx = testing.createMockContext({ path: "/v1/login" });
     const serverRequest = createMockServerRequest(
       {
         method: "POST",
         headerValues: { "content-type": "application/json" },
-        body: JSON.stringify({ email: "example@example.com", password: "password" }),
-      }
+        body: JSON.stringify({
+          email: "example@example.com",
+          password: "password",
+        }),
+      },
     );
     ctx.request = new Request(serverRequest);
     ctx.cookies = new Cookies(ctx.request, ctx.response);
-
-
     const mw = (ctx: RouterContext) => handler.login(ctx);
-    assertEquals(ctx.response.body, {message: "Todo API with deno."});
-    mw(ctx);
-  
+    await mw(ctx);
     assertEquals(ctx.response.status, Status.OK);
-    assertEquals(ctx.response.body, {message: "logout successful"});
-  
-})
+    assertEquals(ctx.response.body, { message: "login successful" });
+    await tearDown();
+  }
 })}
+
+Deno.test({
+  name: "POST /v1/logout",
+  async fn() {
+    await setup()
+    const ctx = testing.createMockContext({ path: "/v1/logout" });
+    const serverRequest = createMockServerRequest(
+      {
+        method: "POST",
+      },
+    );
+    ctx.request = new Request(serverRequest);
+    ctx.cookies = new Cookies(ctx.request, ctx.response);
+    const mw = (ctx: RouterContext) => handler.logout(ctx);
+    mw(ctx);
+    assertEquals(ctx.response.status, Status.OK);
+    assertEquals(ctx.response.body, { message: "logout successful" });
+    await tearDown();
+  }
+})
