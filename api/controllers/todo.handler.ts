@@ -4,7 +4,7 @@ import { getParams} from '../middleware/utils.ts'
 import { TodoRepository } from '../repositories/todo.repository.ts'
 
 interface JwtService {
-    userId(ctx: RouterContext): Promise<string>;
+    userId(jwt: string): Promise<string>;
   }
 
 //trả về tất cả khi dùng METHOD 'GET'
@@ -13,13 +13,14 @@ export class TodoHandler {
     constructor(private todoRepository : TodoRepository,
                 private jwtService : JwtService){}
 
-    async getAll (ctx : RouterContext): Promise<void> {
-        const userId = await this.jwtService.userId(ctx);
+                async getAll({cookies, response}: RouterContext): Promise<void> {
+                    const jwt = cookies.get("jwt") || "";
+                    const userId = await this.jwtService.userId(jwt);
         // const userId = "e161f4eb-8cbe-404f-9d47-3651f2bafe9a";
         const todos = await this.todoRepository.findByUserId(userId);
 
-       ctx.response.status = Status.OK;
-       ctx.response.body = {
+       response.status = Status.OK;
+       response.body = {
            todos,
        };
 
@@ -42,8 +43,9 @@ export class TodoHandler {
     }
 
     async create(ctx : RouterContext) : Promise<void> {
+        const jwt = ctx.cookies.get("jwt") || ""
         const params = await getParams(ctx)
-        const userId = await this.jwtService.userId(ctx);
+        const userId = await this.jwtService.userId(jwt);
         await this.todoRepository.create(params.title,userId)
 
         ctx.response.status = Status.OK;
