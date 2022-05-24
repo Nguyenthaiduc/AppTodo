@@ -19,7 +19,7 @@ export class JwtUtils {
     try {
       const payload = await verify(jwt, key, "HS512");
 
-      return !!payload // convert payload to boolean
+      return !!payload; // convert payload to boolean
 
     } catch  {
       return false;
@@ -34,7 +34,7 @@ export class JwtUtils {
         if (typeof id === 'string') {
           return id
     }
-    throw new Error("JWT contains an invalid user_id")
+    throw new Error("JWT contains an invalid user_id");
   
 }
 }

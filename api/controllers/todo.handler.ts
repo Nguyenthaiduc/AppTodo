@@ -5,7 +5,7 @@ interface JwtUtils {
     userId(jwt: string): Promise<string>;
   }
 
-type updateParams = Partial<Todo> & Pick<Todo, "id">
+type updateParams = Partial<Todo> & Pick<Todo, "id">;
 
 interface ITodoService {
   get(id: string): Promise<Todo | null>;
@@ -52,7 +52,7 @@ export class TodoHandler {
       ctx.response.body = {
         message: "todo was not found"
       };
-      return
+      return;
     }
 
         ctx.response.status = Status.OK;
@@ -72,7 +72,7 @@ export class TodoHandler {
       ctx.response.body = {
         message: e,
       };
-      return
+      return;
     }
 
     const { title } = await this.getParams(ctx);
@@ -82,7 +82,7 @@ export class TodoHandler {
       ctx.response.body = {
         message: "failed to create todo. title is required",
       };
-      return
+      return;
     }
     const result = await this.todoService.register(userId, title);
     if (!result) {
@@ -91,7 +91,7 @@ export class TodoHandler {
       ctx.response.body = {
         message: "failed to register todo",
       };
-      return
+      return;
     }
 
         ctx.response.status = Status.OK;
@@ -109,7 +109,7 @@ export class TodoHandler {
             ctx.response.body = {
                 message: "failed to update todo",
             }
-            return
+            return;
          }
          ctx.response.status = Status.OK;
          ctx.response.body = {
@@ -128,7 +128,7 @@ export class TodoHandler {
             ctx.response.body = {
                 message: "failed to remove todo",
             }
-            return
+            return;
         }
         ctx.response.status = Status.OK;
         ctx.response.body = {

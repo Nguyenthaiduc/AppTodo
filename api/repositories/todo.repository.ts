@@ -1,8 +1,8 @@
-import {uuid} from '../deps.ts'
-import {toMap,fromMap } from '../middleware/utils.ts'
-import { Todo } from '../models/todo.ts'
+import {uuid} from '../deps.ts';
+import {toMap,fromMap } from '../middleware/utils.ts';
+import { Todo } from '../models/todo.ts';
 
-type updateParams = Partial<Todo> & Pick<Todo, "id">
+type updateParams = Partial<Todo> & Pick<Todo, "id">;
 const FILE_PATH = Deno.env.get("DENO_ENV") === "test" ? "./db/todos_test.json": "./db/todos.json";
 
 type Result<T> = [T,undefined] | [undefined, Error]
@@ -54,10 +54,10 @@ async find(id: string): Promise<Todo | null> {
                 updatedAt: now,
             },
         ]);
-        return true
+        return true;
     } catch {
       console.log("failed to create todo")
-      return false
+      return false;
     }
 }
 
