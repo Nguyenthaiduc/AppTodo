@@ -2,6 +2,7 @@ import {uuid} from '../deps.ts'
 import {toMap,fromMap } from '../middleware/utils.ts'
 import { Todo } from '../models/todo.ts'
 
+type updateParams = Partial<Todo> & Pick<Todo, "id">
 const FILE_PATH = Deno.env.get("DENO_ENV") === "test" ? "./db/todos_test.json": "./db/todos.json";
 
 type Result<T> = [T,undefined] | [undefined, Error]
@@ -17,14 +18,14 @@ async findByUserId(userId : string): Promise<Todo[]> {
 }
 
 
-async find(id: string): Promise<[Todo | undefined, Error | undefined]> {
+async find(id: string): Promise<Todo | null> {
     const todos = await this.findAll();
     const todo = toMap(todos).get(id);
 
     if(!todo) {
-        return [undefined,new Error("Can Find Todo")];
+        return null;
     }
-    return [todo,undefined];
+    return todo;
 }
 
    private updateAll(todos: Todo[]): boolean {
@@ -36,7 +37,7 @@ async find(id: string): Promise<[Todo | undefined, Error | undefined]> {
     return true;
 }
 
-  async create(title : string,userId : string):Promise<[boolean | undefined, Error | undefined]> {
+  async create(userId : string,title : string): Promise<boolean> {
     const todos = await this.findAll();
     const id = uuid.generate(); // tạo id ngẫu nhiên từ uuid
 
@@ -53,20 +54,20 @@ async find(id: string): Promise<[Todo | undefined, Error | undefined]> {
                 updatedAt: now,
             },
         ]);
-        return [true,undefined]
-        
-    }catch (err) {
-        return [false, new Error(err)]
+        return true
+    } catch {
+      console.log("failed to create todo")
+      return false
     }
 }
 
- async update(params : Partial<Todo> & Pick<Todo,"id"> ) :Promise<[boolean | undefined, Error | undefined]> {
+async update(params: updateParams): Promise<boolean> {
     const todos = await this.findAll();
     const todoMap = toMap(todos);
     const todo = todoMap.get(params.id);
 
     if(!todo) {
-        return [undefined,new Error("Cannot Find Todo")]
+        return false;
     }
     try {
         todoMap.set(
@@ -78,24 +79,25 @@ async find(id: string): Promise<[Todo | undefined, Error | undefined]> {
             }
         );
         this.updateAll(fromMap(todoMap));
-        return [true, undefined];
+        return true;
 
     }catch(err){
-        return [false, new Error(err)];
+        console.log(err);
+      return false;
     }
    
 }
 
-    async remove(id : string) : Promise<Result<true>> {
+async delete(id: string): Promise<boolean> {
     const todos = await this.findAll();
     const todoMap = toMap(todos);
 
     if(!todoMap.has(id)) {
-        return [undefined,new Error("Cannot find Iteam")]
+        return false;
     }
     todoMap.delete(id);
      this.updateAll(fromMap(todoMap));
-    return [true,undefined]
+     return true;
 }
 
 private async findAll(): Promise<Todo[]> {

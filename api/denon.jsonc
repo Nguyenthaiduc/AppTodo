@@ -17,7 +17,7 @@
     },
     "fmt": {
       "files": {
-        "include": ["src/"],
+        "include": ["src/","/**"],
         "exclude": ["src/testdata/"]
       },
       "options": {

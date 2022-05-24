@@ -1,2 +1,2 @@
-export * as todoModel from './todo.ts';
-export * as userModel from './user.ts'
+export * from "./todo.ts";
+export * from "./user.ts";

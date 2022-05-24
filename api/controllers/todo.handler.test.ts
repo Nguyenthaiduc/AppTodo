@@ -1,15 +1,21 @@
 import { assertEquals, testing } from "../test_deps.ts";
-import { TodoHandler } from "./todo.handler.ts";
-import { TodoRepository } from "../repositories/todo.repository.ts";
-import { RouterContext, Cookies  } from "../deps.ts";
+import { TodoHandler } from "./index.ts";
+import { TodoRepository } from "../repositories/index.ts";
+import { TodoService } from "../service/index.ts";
+import { RouterContext, Cookies } from "../deps.ts";
 
 class MockUtil {
   async userId(_: string): Promise<string> {
-    return await new Promise((resolve) => resolve("e161f4eb-8cbe-404f-9d47-3651f2bafe9a"));
+    return await new Promise((resolve) =>
+      resolve("e161f4eb-8cbe-404f-9d47-3651f2bafe9a")
+    );
   }
 }
 
-const todoHandler = new TodoHandler(new TodoRepository(), new MockUtil());
+const todoHandler = new TodoHandler(
+  new TodoService(new TodoRepository()),
+  new MockUtil()
+);
 const mw = (ctx: RouterContext) => todoHandler.getAll(ctx);
 
 Deno.test({
@@ -31,8 +37,8 @@ Deno.test({
       done: false,
       title: "test todo1",
       createdAt: "2021-07-17T11:32:06.066Z",
-      updatedAt: "2021-07-17T11:32:06.066Z"
-    }
+      updatedAt: "2021-07-17T11:32:06.066Z",
+    };
 
     assertEquals(ctx.response.status, 200);
     assertEquals(todos.length, 4);
@@ -44,7 +50,7 @@ Deno.test({
   async fn() {
     const ctx = testing.createMockContext({
       path: "/v1/todos/0e74a05b-b1e5-4dfd-a879-69b6edd21154",
-      params: {id: "0e74a05b-b1e5-4dfd-a879-69b6edd21154"}
+      params: { id: "0e74a05b-b1e5-4dfd-a879-69b6edd21154" },
     });
 
     const mw = (ctx: RouterContext) => todoHandler.get(ctx);
@@ -57,9 +63,9 @@ Deno.test({
         done: false,
         title: "test todo1",
         createdAt: "2021-07-17T11:32:06.066Z",
-        updatedAt: "2021-07-17T11:32:06.066Z"
-      }
-    }
+        updatedAt: "2021-07-17T11:32:06.066Z",
+      },
+    };
     assertEquals(ctx.response.status, 200);
     assertEquals(actual, expected);
   },
