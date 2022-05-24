@@ -53,7 +53,7 @@ Deno.test({
     };
 
     assertEquals(ctx.response.status, 200);
-    assertEquals(todos.length, 4);
+    assertEquals(todos.length, 3);
     assertEquals(actual, expected);
   },
 });
