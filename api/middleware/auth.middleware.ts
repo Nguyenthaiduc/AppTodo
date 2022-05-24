@@ -1,9 +1,9 @@
 import { RouterContext , Status} from '../deps.ts'
-import { JwtService} from '../service/jwt.service.ts'
+import { JwtUtils} from '../service/index.ts'
 
 export const authMiddleware = async ({response,cookies} : RouterContext,next: () => Promise<unknown>) => {
-    const jwtService = new JwtService();
-    const result = await jwtService.verify(cookies.get("jwt") || "");
+    const jwtUtils = new JwtUtils();
+    const result = await jwtUtils.verify(cookies.get("jwt") || "");
 
     if (!result) {
         response.status = Status.Unauthorized;

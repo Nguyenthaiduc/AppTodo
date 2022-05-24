@@ -1,17 +1,17 @@
 import { RouterContext, Status } from "../deps.ts";
 import { UserRepository } from '../repositories/user.repository.ts';
-import {JwtService } from '../service/index.ts';
+import {JwtUtils } from '../service/index.ts';
 
 export class UserHandler {
     constructor(private userRepository: UserRepository,
-                private jwtService : JwtService){}
+                private jwtUtils : JwtUtils){}
 
             async getUser({ cookies, response }: RouterContext): Promise<void> {
                 const jwt = cookies.get("jwt") || "";
                 let id = "";
 
                 try {
-                    id = await this.jwtService.userId(jwt);
+                    id = await this.jwtUtils.userId(jwt);
                   } catch(e) {
                     console.log(e);
                     response.status = Status.BadRequest;

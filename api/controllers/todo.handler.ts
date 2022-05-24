@@ -1,10 +1,7 @@
 import { RouterContext,Status} from '../deps.ts'
-
-import { getParams} from '../middleware/utils.ts'
-import { TodoRepository } from '../repositories/todo.repository.ts'
 import { Todo } from '../models/todo.ts'
 
-interface JwtService {
+interface JwtUtils {
     userId(jwt: string): Promise<string>;
   }
 
@@ -22,11 +19,11 @@ interface ITodoService {
 
 export class TodoHandler {
     constructor(private todoService: ITodoService,
-                private jwtService : JwtService){}
+                private jwtUtil : JwtUtils){}
 
                 async getAll({cookies, response}: RouterContext): Promise<void> {
                     const jwt = cookies.get("jwt") || "";
-                    const userId = await this.jwtService.userId(jwt);
+                    const userId = await this.jwtUtil.userId(jwt);
         // const userId = "e161f4eb-8cbe-404f-9d47-3651f2bafe9a";
         const todos = await this.todoService.getAll(userId);
 

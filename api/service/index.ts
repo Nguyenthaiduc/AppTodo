@@ -1,2 +1,2 @@
-export * from "./jwt.service.ts";
+export * from "./jwt.ts";
 export * from "./todo.service.ts";
