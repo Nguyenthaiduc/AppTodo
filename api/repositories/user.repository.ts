@@ -1,7 +1,7 @@
 import {User} from '../models/user.ts';
 import {toMap,toMapEmail} from '../middleware/utils.ts';
 import { uuid } from '../deps.ts';
-import { IUserRepository } from "../service/index.ts";
+import { IUserRepository } from "../service/mod.ts";
 
 const FILE_PATH = Deno.env.get("DENO_ENV") === "test" ? "./db/users_test.json": "./db/users.json";
 

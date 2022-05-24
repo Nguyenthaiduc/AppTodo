@@ -1,6 +1,6 @@
 import {Application,bold,yellow} from './deps.ts'
 import router from './routers/router.ts'
-import {logger,internalServerErrorHandler,notFoundErrorHandler} from './middleware/index.ts'
+import {logger,internalServerErrorHandler,notFoundErrorHandler} from './middleware/mod.ts'
 
 
 const listenAndServe = () => {

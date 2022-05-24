@@ -1,4 +1,4 @@
-import { User, Todo } from "../models/index.ts";
+import { User, Todo } from "../models/mod.ts";
 export *  from './root.handler.ts';
 export *  from './todo.handler.ts';
 export *  from './auth.handler.ts';

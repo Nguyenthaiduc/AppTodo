@@ -1,7 +1,7 @@
 import { assertEquals, testing } from "../test_deps.ts";
 import { TodoHandler } from "./mod.ts";
-import { TodoRepository } from "../repositories/index.ts";
-import { TodoService } from "../service/index.ts";
+import { TodoRepository } from "../repositories/mod.ts";
+import { TodoService } from "../service/mod.ts";
 import { Cookies,RouterContext } from "../deps.ts";
 
 class MockUtil {

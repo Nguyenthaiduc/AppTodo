@@ -1,5 +1,5 @@
 import { RouterContext } from "../deps.ts";
-import { User } from "../models/index.ts";
+import { User } from "../models/mod.ts";
 import {
   handleBadRequest,
   handleOK,

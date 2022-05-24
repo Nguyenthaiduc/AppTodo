@@ -2,7 +2,7 @@ import { assertEquals, testing } from "../test_deps.ts";
 import { RouterContext, Status } from "../deps.ts";
 import { AuthHandler, IAuthService } from "./mod.ts";
 import { JwtUtils } from "../utils/mod.ts";
-import { User } from "../models/index.ts";
+import { User } from "../models/mod.ts";
 
 type signupParams = Pick<User, "firstName" | "lastName" | "email" | "password">
 
