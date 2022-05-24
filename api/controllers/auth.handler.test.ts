@@ -62,7 +62,7 @@ Deno.test({
 Deno.test({
   name: "POST /v1/login",
   async fn() {
-    await setup()
+    await setup();
     const ctx = testing.createMockContext({ path: "/v1/login" });
     const serverRequest = createMockServerRequest(
       {
@@ -82,12 +82,13 @@ Deno.test({
     assertEquals(ctx.response.body, { message: "login successful" });
     await tearDown();
   }
-})}
+},
+)};
 
 Deno.test({
   name: "POST /v1/logout",
   async fn() {
-    await setup()
+    await setup();
     const ctx = testing.createMockContext({ path: "/v1/logout" });
     const serverRequest = createMockServerRequest(
       {
@@ -101,5 +102,5 @@ Deno.test({
     assertEquals(ctx.response.status, Status.OK);
     assertEquals(ctx.response.body, { message: "logout successful" });
     await tearDown();
-  }
+  },
 })
