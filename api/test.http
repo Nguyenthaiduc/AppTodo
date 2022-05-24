@@ -1,2 +1,21 @@
-###
+###GET
 GET http://localhost:8000/v1
+###Signup
+POST http://localhost:8000/v1/signup
+###Login
+POST http://localhost:8000/v1/login
+###Logout
+POST http://localhost:8000/v1/logout
+###Get User
+GET http://localhost:8000/v1/user
+###Get All Todos
+GET http://localhost:8000/v1/todos
+###Get a todo
+GET http://localhost:8000/v1/todos/1
+###Create Todo
+POST http://localhost:8000/v1/todos
+###Update Todo
+PUT http://localhost:8000/v1/todos/2
+###DELETE
+DELETE http://localhost:8000/v1/todos/3
+
