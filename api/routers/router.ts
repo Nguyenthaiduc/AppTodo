@@ -1,9 +1,9 @@
 import {Router} from '../deps.ts'
-import {AuthHandler , RootHandler,TodoHandler,UserHandler   } from '../controllers/index.ts'
+import {AuthHandler , RootHandler,TodoHandler,UserHandler   } from '../controllers/mod.ts'
 import { authMiddleware } from '../middleware/auth.middleware.ts'
 import { loginValidation, registerValidation } from "../validations/index.ts";
 import { TodoRepository, UserRepository } from '../repositories/index.ts';
-import { JwtUtils } from '../service/index.ts';
+import { JwtUtils } from '../utils/mod.ts';
 import { TodoService, AuthService  } from '../service/index.ts'
 
 const router = new Router();

@@ -1,5 +1,5 @@
 import { RouterContext , Status} from '../deps.ts'
-import { JwtUtils} from '../service/index.ts'
+import { JwtUtils} from '../utils/mod.ts'
 
 export const authMiddleware = async ({response,cookies} : RouterContext,next: () => Promise<unknown>) => {
     const jwtUtils = new JwtUtils();

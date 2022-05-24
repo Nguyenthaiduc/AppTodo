@@ -1,5 +1,5 @@
 import { assertEquals, testing } from "../test_deps.ts";
-import { TodoHandler } from "./index.ts";
+import { TodoHandler } from "./mod.ts";
 import { TodoRepository } from "../repositories/index.ts";
 import { TodoService } from "../service/index.ts";
 import { Cookies,RouterContext } from "../deps.ts";
@@ -10,7 +10,19 @@ class MockUtil {
       resolve("e161f4eb-8cbe-404f-9d47-3651f2bafe9a")
     );
   }
+  //
+  async verify(_: string): Promise<boolean> {
+    return await new Promise((resolve) =>
+      resolve(true)
+    );
+  }
+  async create(_: string): Promise<string> {
+    return await new Promise((resolve) =>
+      resolve("e161f4eb-8cbe-404f-9d47-3651f2bafe9a")
+    );
+  }
 }
+
 
 const todoHandler = new TodoHandler(
   new TodoService(new TodoRepository()),

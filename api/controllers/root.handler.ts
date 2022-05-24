@@ -1,8 +1,8 @@
-import { RouterContext, Status } from "../deps.ts";
+import { RouterContext } from "../deps.ts";
+import { handleOK } from "./handle_response.ts";
 
 export class RootHandler {
     getHome(ctx : RouterContext) : void {
-        ctx.response.status = Status.OK;
-        ctx.response.body = "TodoList API with Deno"
+        handleOK(ctx, { message: "Todo API with deno." });
     }
 }
