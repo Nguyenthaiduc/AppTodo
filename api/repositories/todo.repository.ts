@@ -28,9 +28,9 @@ async find(id: string): Promise<Todo | null> {
     return todo;
 }
 
-   private updateAll(todos: Todo[]): boolean {
+   private async  updateAll(todos: Todo[]): Promise<boolean> {
     const encoder = new TextEncoder();
-    Deno.writeFile(
+    await Deno.writeFile(
         FILE_PATH,
         encoder.encode(JSON.stringify(todos, null, "\t")),
     )
@@ -43,7 +43,7 @@ async find(id: string): Promise<Todo | null> {
 
     const now = new Date().toISOString();
     try {
-        this.updateAll([
+        await this.updateAll([
             ...todos,
             {
                 id,
@@ -78,7 +78,7 @@ async update(params: updateParams): Promise<boolean> {
                 updatedAt: new Date().toISOString(), //sẽ chuyển đổi một đối tượng thời gian thành một chuỗi theo tiêu chuẩn ISO.
             }
         );
-        this.updateAll(fromMap(todoMap));
+        await this.updateAll(fromMap(todoMap));
         return true;
 
     }catch(err){
