@@ -96,7 +96,7 @@ async delete(id: string): Promise<boolean> {
         return false;
     }
     todoMap.delete(id);
-     this.updateAll(fromMap(todoMap));
+    await this.updateAll(fromMap(todoMap));
      return true;
 }
 

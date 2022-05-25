@@ -15,3 +15,7 @@ export interface IJwtUtil {
     signup(params: Pick<User, "firstName" | "lastName" | "email" | "password">):Promise<boolean>
     authenticate(email: string, password: string):Promise<User | null>
   }
+
+  export interface IUserService {
+    getUser(userId: string): Promise<User | null>;
+  }

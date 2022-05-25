@@ -4,13 +4,13 @@ import { authMiddleware } from '../middleware/auth.middleware.ts'
 import { loginValidation, registerValidation } from "../validations/mod.ts";
 import { TodoRepository, UserRepository } from '../repositories/mod.ts';
 import { JwtUtils } from '../utils/mod.ts';
-import { TodoService, AuthService  } from '../service/mod.ts'
+import { TodoService, AuthService, UserService   } from '../service/mod.ts'
 
 const router = new Router();
+const rootHandler = new RootHandler();
 const todoHandler = new TodoHandler(new TodoService(new TodoRepository()), new JwtUtils());
 
 //Todo
-const rootHandler = new RootHandler();
 router.get("/v1",(ctx) => rootHandler.getHome(ctx))
     
 
@@ -30,7 +30,10 @@ router.post('/v1/login',  loginValidation.LoginValidation, (ctx) => authHandler.
 router.post('/v1/logout', (ctx) => authHandler.logout(ctx));
 
 // User
-const userHandler = new UserHandler(new UserRepository(),new JwtUtils());
+const userHandler = new UserHandler(
+    new UserService(new UserRepository()),
+    new JwtUtils(),
+  );
 router.get('/v1/user',authMiddleware,(ctx) => userHandler.getUser(ctx));
 
 export default router;
