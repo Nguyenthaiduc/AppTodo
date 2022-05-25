@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo API</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .success{
+            color: white;
+            font-weight: bold;
+            background-color: green;
+            padding: 1px 4px;
+            border-radius: 5px;
+        }
+        .fail{
+            color: white;
+            font-weight: bold;
+            background-color: red;
+            padding: 1px 4px;
+            border-radius: 5px;
+        }
+        li{
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to Todo API</h1>
+    <h3>Endpoints: </h3>
+    <ul>
+        <li>
+            <h5>Todo</h5>
+            <ol>
+                <li class="description">Get todo data: <strong>GET:</strong> /api/todos or /api/todos?page=1&limit=10
+                    <p class="return">Return</p>
+                    <ul>
+                        <li><span class="success">Success:</span> {result: true, message, data}</li>
+                        <li><span class="fail">Fail:</span>span> {result: false, message, err}</li>
+                    </ul>
+                </li>
+                <li><strong>POST:</strong> /api/todos body={title, discription, startTime, endTime, status}</li>
+                <li><strong>PUT: </strong>/api/todos/{id} body={title, discription, startTime, endTime, status}</li>
+                <li><strong>DELETE:</strong> /api/todos/{id}</li>
+            </ul>
+        </li>
+        <li>
+            <h5>User</h5>
+            <ul>
+                <li><strong>POST:</strong> /api/user/signup body={userName, password}</li>
+                <li><strong>POST:</strong> /api/user/login body={userName, password}</li>
+                <li><strong>GET:</strong> /api/user/{id}</li>
+            </ul>
+       
+        </li>
+    </ul>
+</body>
+
+</html>
