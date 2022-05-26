@@ -5,7 +5,7 @@ import { User } from '../models';
 import { IUserRequest } from '../interfaces';
 dotenv.config();
 
-const verifyToken = (req: IUserRequest, res: Response, next: NextFunction) => {
+export const verifyToken = (req: IUserRequest, res: Response, next: NextFunction) => {
 	const token = req.headers['authorization'];
 	if (token !== undefined) {
 		req.token = token;
@@ -26,4 +26,4 @@ const verifyToken = (req: IUserRequest, res: Response, next: NextFunction) => {
 	}
 };
 
-export default verifyToken;
+

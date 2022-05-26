@@ -3,17 +3,17 @@ import { Entity, ObjectIdColumn, Column } from 'typeorm';
 @Entity('user')
 export class User {
 	@ObjectIdColumn()
-	id: string;
+	id!: string;
 
 	@Column()
-	userName: string;
+	userName!: string;
 
 	@Column()
-	password: string;
+	password!: string;
 
 	@Column()
-	avatar: string;
+	avatar!: string;
 
 	@Column()
-	email: string;
+	email!: string;
 }

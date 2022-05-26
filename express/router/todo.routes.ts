@@ -1,0 +1,10 @@
+import { IRoute, Router } from "express";
+import {getTodoList, createTodo,getTodo,updateTodo,  deleteTodo} from "../controllers";
+import { verifyToken } from '../middlewares';
+const route = Router();
+route.get("/",verifyToken, getTodoList);
+route.post("/",verifyToken, createTodo);
+route.get("/:id",verifyToken,getTodo);
+route.put("/:id",verifyToken, updateTodo);
+route.delete("/:id",verifyToken, deleteTodo);
+export default route;
