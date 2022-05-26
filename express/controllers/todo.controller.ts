@@ -41,3 +41,33 @@ export const getTodoList = async(req: IUserRequest,res : Response)=> {
     }
 }
 
+export const getTodo = async (req: IUserRequest,res : Response) => {
+    try {
+
+        const todoId = req.params.id;
+        const userId = req.userId;
+        const todoRepo = getMongoRepository(Todo);
+        const todo: Todo | undefined = await todoRepo.findOne({where: {_id: new ObjectId(todoId),userId: userId} });
+        if (!todo) {
+            res.json({
+                result : false,
+                message : "Todo not found",
+            })
+        }
+
+        res.json({
+            result : true,
+            data: todo,
+            message : "Fail to get a Todo"
+        })
+
+    } catch (err) {
+        res.json({
+            result : false,
+            message : "Failed to get todo",
+        })
+    }
+}
+
+
+
