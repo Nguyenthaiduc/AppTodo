@@ -18,7 +18,10 @@ const connection = async () => {
     } catch (err) {
         console.log("Connect Database Error",err);
     }
+
 }
+
+export default connection;
 
 
 
